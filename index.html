@@ -1,20 +1,21 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html>
 
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
     <title>Vue.js App</title>
-    <link href="main.css" rel="stylesheet">
-    <link rel="shortcut icon" href="penguin.ico" type="image/vnd.microsoft.icon">
+    <link rel="stylesheet" href="./main.css">
+    
 </head>
-
 <body>
     <div id="app">
-        <!-- 絞り込みラジオボタン -->
-        <!-- ToDo テーブル -->
+        <h1>チュートリアルToDoリスト</h1>
+        <label v-for="label in options">
+            <input type="radio" v-model="current" v-bind:value="label.value">{{ label.label }}
+        </label>
+        （{{ computedTodos.length }} 件を表示）
         <table>
-            <!--テーブルヘッダー-->
-            <thead>
+            <thead v-pre>
                 <tr>
                     <th class="id">ID</th>
                     <th class="comment">コメント</th>
@@ -24,25 +25,29 @@
             </thead>
             <tbody>
                 <!--[1]ここに<tr>でTodoの要素を1行ずつ繰り返し表示したい-->
-                <tr v-for="item in todos" v-bind:key="item.id">
+                <tr 
+                v-for="item in computedTodos" 
+                v-bind:key="item.id" 
+                v-bind:class="{done:item.state}">
                     <!--要素の情報-->
                     <th>{{ item.id }}</th>
-                    <th>{{ item.comment }}</th>
+                    <td>{{ item.comment }}</td>
                     <td class="state">
-                    <!-- 状態変更ボタンのモック -->
-                    <button v-on :click="doChangeState(item)">
-                        {{ item.state }}
-                    </button>
+                        <!-- 状態変更ボタンのモック -->
+                        <button v-on:click="doChangeState(item)">
+                            {{ labels[item.state] }}
+                        </button>
                     </td>
                     <td class="button">
                         <!--　削除ボタンのモック-->
-                        <button v-on :click.ctrl="doRemove(item)">
+                        <button v-on:click.ctrl="doRemove(item)">
                             削除
                         </button>
                     </td>
                 </tr>
             </tbody>
         </table>
+        <p>※削除ボタンはコントロールキーを押しながらクリックして下さい</p>
         <h2>新しい作業の追加</h2>
         <form class="add=form" v-on:submit.prevent="doAdd">
             <!--コメント入力フォーム-->
@@ -50,11 +55,8 @@
             <!--追加ボタンのモック-->
             <button type="submit">追加</button>
         </form>
-        <!-- 新規登録フォーム -->
-        <input type="text" ref="comment">
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.js"></script>
-    <script src="main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="/main.js"></script>
 </body>
-
 </html>

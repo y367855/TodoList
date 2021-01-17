@@ -19,7 +19,26 @@ var app = new Vue({
    el: '#app',
    data: {
       //使用するデータ
-      todos: []
+      todos: [],
+      current: -1,
+      options: [
+         { value: -1, label: 'すべて' },
+         { value: 0, label: '作業中' },
+         { value: 1, label: '完了' },
+      ]
+   },
+
+   computed: {
+      computedTodos: function () {
+         return this.todos.filter(function (el) {
+            return this.current < 0 ? true : this.current === el.state
+         }, this)
+      },
+      labels() {
+         return this.options.reduce(function (a, b) {
+            return Object.assign(a, { [b.value]: b.label })
+         }, {})
+      }
    },
    watch: {
       //オプションを使う場合はオブジェクト形式にする
@@ -30,6 +49,11 @@ var app = new Vue({
          },
          //deepオプションでネストしているデータも監視できる
          deep: true
+      }
+      },
+      created() {
+         //インスタンス作成時に自動的にfetch()する
+         this.todos = todoStorage.fetch()
       },
       methods: {
          //使用するメソッド
@@ -51,7 +75,6 @@ var app = new Vue({
             })
             //フォーム要素を空にする
             comment.value = ''
-         }
       },
       //状態変更の処理
       doChangeState: function (item) {
@@ -62,9 +85,5 @@ var app = new Vue({
          var index = this.todos.indexof(item)
          this.todos.splice(index, 1)
       }
-   },
-   created() {
-      //インスタンス作成時に自動的にfetch()する
-      this.todos = todoStorage.fetch()
    }
 })
