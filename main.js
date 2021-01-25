@@ -50,31 +50,31 @@ var app = new Vue({
          //deepオプションでネストしているデータも監視できる
          deep: true
       }
-      },
-      created() {
-         //インスタンス作成時に自動的にfetch()する
-         this.todos = todoStorage.fetch()
-      },
-      methods: {
-         //使用するメソッド
-         //ToDo追加の処理
-         doAdd: function (event, value) {
-            // refで名前を付けておいた要素を参照
-            var comment = this.$refs.comment
-            //入力がなければ何もしないでreturn
-            if (!comment.value.length) {
-               return
-            }
-            //{新しいID,コメント,作業状態}
-            //というオブジェクトを現在のtodosリストへpush
-            //作業状態「state」はデフォルト「作業中=0」で作成
-            this.todos.push({
-               id: todoStorage.uid++,
-               comment: comment.value,
-               state: 0
-            })
-            //フォーム要素を空にする
-            comment.value = ''
+   },
+   created() {
+      //インスタンス作成時に自動的にfetch()する
+      this.todos = todoStorage.fetch()
+   },
+   methods: {
+      //使用するメソッド
+      //ToDo追加の処理
+      doAdd: function (event, value) {
+         // refで名前を付けておいた要素を参照
+         var comment = this.$refs.comment
+         //入力がなければ何もしないでreturn
+         if (!comment.value.length) {
+            return
+         }
+         //{新しいID,コメント,作業状態}
+         //というオブジェクトを現在のtodosリストへpush
+         //作業状態「state」はデフォルト「作業中=0」で作成
+         this.todos.push({
+            id: todoStorage.uid++,
+            comment: comment.value,
+            state: 0
+         })
+         //フォーム要素を空にする
+         comment.value = ''
       },
       //状態変更の処理
       doChangeState: function (item) {
@@ -82,7 +82,7 @@ var app = new Vue({
       },
       //削除の処理
       doRemove: function (item) {
-         var index = this.todos.indexof(item)
+         var index = this.todos.indexOf(item)
          this.todos.splice(index, 1)
       }
    }
